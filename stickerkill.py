@@ -2,7 +2,7 @@
 # pylint: disable=W0613, C0116
 # type: ignore[union-attr]
 
-import logging, sys
+import logging, os
 
 from telegram import Update, Bot
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
@@ -14,7 +14,7 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-bot = Bot(sys.argv[1])
+bot = Bot(os.environ['telegram_token'])
 
 def stickerkill(update: Update, context: CallbackContext) -> None:
     if update.message.sticker.is_animated == True:
@@ -22,7 +22,7 @@ def stickerkill(update: Update, context: CallbackContext) -> None:
 
 def main():
     # Create the Updater and pass it your bot's token.
-    updater = Updater(sys.argv[1])
+    updater = Updater(os.environ['telegram_token'])
 
     # Get the dispatcher to register handlers
     dispatcher = updater.dispatcher
