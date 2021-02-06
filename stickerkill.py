@@ -21,21 +21,26 @@ def stickerkill(update: Update, context: CallbackContext) -> None:
         bot.delete_message(update.message.chat.id, update.message.message_id)
 
 def main():
+    TOKEN = os.environ['telegram_token']
+    NAME = os.environ['app_name']
+
     # Create the Updater and pass it your bot's token.
-    updater = Updater(os.environ['telegram_token'])
+    updater = Updater(TOKEN)
 
     # Get the dispatcher to register handlers
     dispatcher = updater.dispatcher
 
+    # Port is given by Heroku
+    PORT = os.environ.get('PORT')
+
     # delete animated stickers
     dispatcher.add_handler(MessageHandler(Filters.sticker, stickerkill))
 
-    # Start the Bot
-    updater.start_polling()
-
-    # Run the bot until you press Ctrl-C or the process receives SIGINT,
-    # SIGTERM or SIGABRT. This should be used most of the time, since
-    # start_polling() is non-blocking and will stop the bot gracefully.
+    # Start the webhook
+    updater.start_webhook(listen="0.0.0.0",
+                          port=int(PORT),
+                          url_path=TOKEN)
+    updater.bot.setWebhook("https://{}.herokuapp.com/{}".format(NAME, TOKEN))
     updater.idle()
 
 
