@@ -36,11 +36,15 @@ def main():
     # delete animated stickers
     dispatcher.add_handler(MessageHandler(Filters.sticker, stickerkill))
 
+    # uncomment this if you don't want to use heroku/webhooks
+    #updater.start_polling()
+
     # Start the webhook
     updater.start_webhook(listen="0.0.0.0",
                           port=int(PORT),
                           url_path=TOKEN)
     updater.bot.setWebhook("https://{}.herokuapp.com/{}".format(NAME, TOKEN))
+
     updater.idle()
 
 
