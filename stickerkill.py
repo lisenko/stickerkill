@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 bot = Bot(os.environ['telegram_token'])
 
 def stickerkill(update: Update, context: CallbackContext) -> None:
-    if update.message.sticker.is_animated == True:
+    if update.message.sticker.is_animated == True or update.message.sticker.is_video == True:
         bot.delete_message(update.message.chat.id, update.message.message_id)
 
 def main():
